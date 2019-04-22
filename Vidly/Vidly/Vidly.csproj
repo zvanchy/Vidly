@@ -227,6 +227,10 @@
     <Compile Include="Migrations\201904180631381_populateMovies.Designer.cs">
       <DependentUpon>201904180631381_populateMovies.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904220520538_22042019.cs" />
+    <Compile Include="Migrations\201904220520538_22042019.Designer.cs">
+      <DependentUpon>201904220520538_22042019.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -234,6 +238,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MembershipType.cs" />
+    <Compile Include="Models\Min18YearsIfAMember.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -363,6 +368,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904180631381_populateMovies.resx">
       <DependentUpon>201904180631381_populateMovies.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904220520538_22042019.resx">
+      <DependentUpon>201904220520538_22042019.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
