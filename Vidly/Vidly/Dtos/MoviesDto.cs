@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Vidly.Models;
 
 namespace Vidly.Dtos
 {
@@ -12,6 +13,8 @@ namespace Vidly.Dtos
 
         [Required]
         public string Name { get; set; }
+
+        public GenreDto Genre { get; set; }
 
         [Required]
         public byte GenreId { get; set; }

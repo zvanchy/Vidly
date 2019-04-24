@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using Vidly.Dtos;
 using Vidly.Models;
+using System.Data.Entity;
 
 namespace Vidly.Controllers.api
 {
@@ -22,7 +21,9 @@ namespace Vidly.Controllers.api
         //GET /api/movies/
         public IHttpActionResult GetMovies()
         {
-            return Ok(_context.Movies.ToList().Select(Mapper.Map<Movie, MoviesDto>));
+            return Ok(_context.Movies.Include(m => m.Genre)
+                .ToList()
+                .Select(Mapper.Map<Movie, MoviesDto>));
         }
 
         //GET /api/movies/1
@@ -65,7 +66,8 @@ namespace Vidly.Controllers.api
             if (movieInDb == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            Mapper.Map(moviesDto, movieInDb);
+
+            Mapper.Map<MoviesDto, Movie>(moviesDto, movieInDb);
 
             _context.SaveChanges();
         }
@@ -80,6 +82,7 @@ namespace Vidly.Controllers.api
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
             _context.Movies.Remove(movieInDb);
+            _context.SaveChanges();
         }
     }
 }
