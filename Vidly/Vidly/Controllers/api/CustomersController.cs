@@ -20,12 +20,20 @@ namespace Vidly.Controllers.api
         }
 
         //GET /api/customers
-        public IEnumerable<CustomerDto> GetCustomers()
+        public IHttpActionResult GetCustomers(string query = null)
         {
-            return _context.Customers
-                .Include(c=>c.MembershipType)
-                .ToList()
-                .Select(Mapper.Map<Customer,CustomerDto>);
+
+            var customersQuery = _context.Customers
+                .Include(c => c.MembershipType);
+
+            if (!string.IsNullOrEmpty(query))
+            {
+                customersQuery = customersQuery.Where(c => c.Name.Contains(query));
+            }
+
+            var customerDtos = customersQuery.ToList().Select(Mapper.Map<Customer, CustomerDto>);
+
+            return Ok(customerDtos);
         }
 
         //GET /api/customers/1
@@ -35,16 +43,16 @@ namespace Vidly.Controllers.api
 
             if (customer == null)
                 return NotFound();
-                //throw new HttpResponseException(HttpStatusCode.NotFound);
+            //throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            return Ok(Mapper.Map<Customer,CustomerDto>(customer));
+            return Ok(Mapper.Map<Customer, CustomerDto>(customer));
         }
 
         //POST /api/customer
         [HttpPost]
         public IHttpActionResult CreateCustomer(CustomerDto customerDto)
-        { 
-            if(!ModelState.IsValid)
+        {
+            if (!ModelState.IsValid)
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
@@ -55,14 +63,14 @@ namespace Vidly.Controllers.api
             _context.SaveChanges();
 
             customerDto.Id = customer.Id;
-             
+
             //return customerDto;
-            return Created(new Uri(Request.RequestUri + "/"  + customer.Id),customerDto);
+            return Created(new Uri(Request.RequestUri + "/" + customer.Id), customerDto);
         }
 
         //POST /api/customerd/1
         [HttpPut]
-        public void UpdateCustomer(int id,CustomerDto customerDto)
+        public void UpdateCustomer(int id, CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
             {
